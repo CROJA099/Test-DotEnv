@@ -40,42 +40,23 @@ android {
         versionName = flutter.versionName
     }
 
-    
+    val clientName = System.getenv("CLIENT_NAME") ?: throw GradleException("CLIENT_NAME is not defined")
 
     signingConfigs {
-        if (project.hasProperty("mazdaBuild")) {
-            create("mazdaConfig") {
-                if (System.getenv("CI") != null) {
-                    storeFile = file(System.getenv("MAZDA_KEYSTORE_PATH") ?: throw GradleException("MAZDA_KEYSTORE_PATH is not defined"))
-                    storePassword = System.getenv("MAZDA_KEYSTORE_PASSWORD") ?: throw GradleException("MAZDA_KEYSTORE_PASSWORD is not defined")
-                    keyAlias = System.getenv("MAZDA_KEY_ALIAS") ?: throw GradleException("MAZDA_KEY_ALIAS is not defined")
-                    keyPassword = System.getenv("MAZDA_KEY_PASSWORD") ?: throw GradleException("MAZDA_KEY_PASSWORD is not defined")
-                } else {
-                    storeFile = keystoreProperties["mazda_storeFile"]?.let { file(it as String) }
-                    storePassword = keystoreProperties["mazda_storePassword"] as String?
-                    keyAlias = keystoreProperties["mazda_keyAlias"] as String?
-                    keyPassword = keystoreProperties["mazda_keyPassword"] as String?
-                }
-            }
-        }
-
-        if (project.hasProperty("nissanBuild")) {
-            create("nissanConfig") {
-                if (System.getenv("CI") != null) {
-                    storeFile = file(System.getenv("NISSAN_KEYSTORE_PATH") ?: throw GradleException("NISSAN_KEYSTORE_PATH is not defined"))
-                    storePassword = System.getenv("NISSAN_KEYSTORE_PASSWORD") ?: throw GradleException("NISSAN_KEYSTORE_PASSWORD is not defined")
-                    keyAlias = System.getenv("NISSAN_KEY_ALIAS") ?: throw GradleException("NISSAN_KEY_ALIAS is not defined")
-                    keyPassword = System.getenv("NISSAN_KEY_PASSWORD") ?: throw GradleException("NISSAN_KEY_PASSWORD is not defined")
-                } else {
-                    storeFile = keystoreProperties["nissan_storeFile"]?.let { file(it as String) }
-                    storePassword = keystoreProperties["nissan_storePassword"] as String?
-                    keyAlias = keystoreProperties["nissan_keyAlias"] as String?
-                    keyPassword = keystoreProperties["nissan_keyPassword"] as String?
-                }
+        create("${clientName}Config") {
+            if (System.getenv("CI") != null) {
+                storeFile = file(System.getenv("${clientName}_KEYSTORE_PATH") ?: throw GradleException("${clientName}_KEYSTORE_PATH is not defined"))
+                storePassword = System.getenv("${clientName}_KEYSTORE_PASSWORD") ?: throw GradleException("${clientName}_KEYSTORE_PASSWORD is not defined")
+                keyAlias = System.getenv("${clientName}_KEY_ALIAS") ?: throw GradleException("${clientName}_KEY_ALIAS is not defined")
+                keyPassword = System.getenv("${clientName}_KEY_PASSWORD") ?: throw GradleException("${clientName}_KEY_PASSWORD is not defined")
+            } else {
+                storeFile = keystoreProperties["${clientName}_storeFile"]?.let { file(it as String) }
+                storePassword = keystoreProperties["${clientName}_storePassword"] as String?
+                keyAlias = keystoreProperties["${clientName}_keyAlias"] as String?
+                keyPassword = keystoreProperties["${clientName}_keyPassword"] as String?
             }
         }
     }
-
 
     flavorDimensions("flavor-type")
     productFlavors {
@@ -98,6 +79,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.findByName("${clientName}Config") ?: throw GradleException("${clientName}Config not found")
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")

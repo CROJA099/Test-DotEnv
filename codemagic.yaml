@@ -6,9 +6,10 @@ workflows:
       groups:
         - Mazda 
     scripts:
+      - export CLIENT_NAME="mazda"
       - flutter clean
       - flutter pub get
-      - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env -PmazdaBuild
+      - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
     artifacts:
       - build/app/outputs/flutter-apk/app-mazda.apk
 
@@ -32,9 +33,10 @@ workflows:
       groups:
         - Nissan 
     scripts:
+      - export CLIENT_NAME="nissan"
       - flutter clean
       - flutter pub get
-      - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env -PnissanBuild
+      - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
     artifacts:
       - build/app/outputs/flutter-apk/app-nissan.apk
 
