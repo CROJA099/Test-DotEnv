@@ -6,7 +6,6 @@ workflows:
       groups:
         - Mazda 
     scripts:
-      - export CLIENT_NAME="mazda"
       - flutter clean
       - flutter pub get
       - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
@@ -33,7 +32,6 @@ workflows:
       groups:
         - Nissan 
     scripts:
-      - export CLIENT_NAME="nissan"
       - flutter clean
       - flutter pub get
       - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env

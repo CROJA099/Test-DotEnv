@@ -64,13 +64,13 @@ android {
             dimension = "flavor-type"
             applicationId = "com.example.mazda"
             resValue(type = "string", name = "app_name", value = "Mazda App")
-            signingConfig = signingConfigs.getByName("mazdaConfig")            
+            signingConfig = signingConfigs.getByName("MAZDACONFIG")            
         }
         create("nissan") {
             dimension = "flavor-type"
             applicationId = "com.example.nissan"
             resValue(type = "string", name = "app_name", value = "Nissan App")
-            signingConfig = signingConfigs.getByName("nissanConfig")           
+            signingConfig = signingConfigs.getByName("NISSANCONFIG")           
         }
     }
     
@@ -79,7 +79,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.findByName("${clientName}Config") ?: throw GradleException("${clientName}Config not found")
+            signingConfig = signingConfigs.findByName("${clientName}CONFIG") ?: throw GradleException("${clientName}CONFIG not found")
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")
