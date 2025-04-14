@@ -43,7 +43,7 @@ android {
     val clientName = System.getenv("CLIENT_NAME") ?: throw GradleException("CLIENT_NAME is not defined")
 
     signingConfigs {
-        create("${clientName}Config") {
+        create("${clientName}CONFIG") {
             if (System.getenv("CI") != null) {
                 storeFile = file(System.getenv("${clientName}_KEYSTORE_PATH") ?: throw GradleException("${clientName}_KEYSTORE_PATH is not defined"))
                 storePassword = System.getenv("${clientName}_KEYSTORE_PASSWORD") ?: throw GradleException("${clientName}_KEYSTORE_PASSWORD is not defined")
