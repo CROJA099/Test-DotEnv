@@ -3,6 +3,8 @@ workflows:
     name: Mazda APK Workflow
     environment:
       flutter: stable
+      groups:
+        - Mazda 
     scripts:
       - flutter clean
       - flutter pub get
@@ -14,6 +16,8 @@ workflows:
     name: Mazda IPA Workflow
     environment:
       flutter: stable
+      groups:
+        - Mazda 
     scripts:
       - flutter clean
       - flutter pub get
@@ -25,6 +29,8 @@ workflows:
     name: Nissan APK Workflow
     environment:
       flutter: stable
+      groups:
+        - Nissan 
     scripts:
       - flutter clean
       - flutter pub get
@@ -36,6 +42,8 @@ workflows:
     name: Nissan IPA Workflow
     environment:
       flutter: stable
+      groups:
+        - Nissan 
     scripts:
       - flutter clean
       - flutter pub get
