@@ -41,6 +41,7 @@ android {
     }
 
     val clientName = System.getenv("CLIENT_NAME") ?: throw GradleException("CLIENT_NAME is not defined")
+    val flavor = System.getenv("FLAVOR_NAME") ?: throw GradleException("FLAVOR_NAME is not defined")
 
     signingConfigs {
         create("${clientName}CONFIG") {
@@ -60,18 +61,12 @@ android {
 
     flavorDimensions("flavor-type")
     productFlavors {
-        create("mazda") {
+        create("${flavor}") {
             dimension = "flavor-type"
-            applicationId = "com.example.mazda"
-            resValue(type = "string", name = "app_name", value = "Mazda App")
-            signingConfig = signingConfigs.getByName("MAZDACONFIG")            
-        }
-        create("nissan") {
-            dimension = "flavor-type"
-            applicationId = "com.example.nissan"
-            resValue(type = "string", name = "app_name", value = "Nissan App")
-            signingConfig = signingConfigs.getByName("NISSANCONFIG")           
-        }
+            applicationId = "com.example.${flavor}"
+            resValue(type = "string", name = "app_name", value = "${flavor} App")
+            signingConfig = signingConfigs.getByName("${clientName}CONFIG")            
+        }        
     }
     
     buildTypes {
