@@ -8,7 +8,7 @@ workflows:
     scripts:
       - flutter clean
       - flutter pub get
-      - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
+      - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env -PmazdaBuild
     artifacts:
       - build/app/outputs/flutter-apk/app-mazda.apk
 
@@ -34,7 +34,7 @@ workflows:
     scripts:
       - flutter clean
       - flutter pub get
-      - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
+      - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env -PnissanBuild
     artifacts:
       - build/app/outputs/flutter-apk/app-nissan.apk
 
