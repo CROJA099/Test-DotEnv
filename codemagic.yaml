@@ -1,0 +1,44 @@
+workflows:
+  mazda_android:
+    name: Mazda APK Workflow
+    environment:
+      flutter: stable
+    scripts:
+      - flutter clean
+      - flutter pub get
+      - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
+    artifacts:
+      - build/app/outputs/flutter-apk/app-mazda.apk
+
+  mazda_ios:
+    name: Mazda IPA Workflow
+    environment:
+      flutter: stable
+    scripts:
+      - flutter clean
+      - flutter pub get
+      - flutter build ipa --flavor=mazda --dart-define-from-file=.env/mazda.env
+    artifacts:
+      - build/ios/ipa/*.ipa
+
+  nissan_android:
+    name: Nissan APK Workflow
+    environment:
+      flutter: stable
+    scripts:
+      - flutter clean
+      - flutter pub get
+      - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
+    artifacts:
+      - build/app/outputs/flutter-apk/app-nissan.apk
+
+  nissan_ios:
+    name: Nissan IPA Workflow
+    environment:
+      flutter: stable
+    scripts:
+      - flutter clean
+      - flutter pub get
+      - flutter build ipa --flavor=nissan --dart-define-from-file=.env/nissan.env
+    artifacts:
+      - build/ios/ipa/*.ipa
