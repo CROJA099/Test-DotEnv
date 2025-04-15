@@ -12,7 +12,7 @@ workflows:
 
       - name: Decode Keystore
         script: |
-          echo "Decoding keystore file..."
+          echo "KEYSTORE_FILE: $KEYSTORE_FILE"
           echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
 
           echo "Generating key.properties..."
