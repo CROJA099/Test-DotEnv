@@ -5,8 +5,7 @@ workflows:
       flutter: stable
       groups:
         - Mazda 
-      android_signing:
-        - MazdaKey
+      
     scripts:
       - flutter clean
       - flutter pub get
