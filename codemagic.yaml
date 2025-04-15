@@ -5,6 +5,8 @@ workflows:
       flutter: stable
       groups:
         - Mazda 
+      android_signing:
+        - mazda_keystore
     scripts:
       - flutter clean
       - flutter pub get
@@ -31,6 +33,8 @@ workflows:
       flutter: stable
       groups:
         - Nissan 
+      android_signing:
+        - NissanKey
     scripts:
       - flutter clean
       - flutter pub get
