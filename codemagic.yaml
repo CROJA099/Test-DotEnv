@@ -13,7 +13,9 @@ workflows:
       - name: Decode Keystore
         script: |
           echo "KEYSTORE_FILE: $KEYSTORE_FILE"
-          echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
+          
+          - echo "$KEYSTORE_FILE" | base64 --decode > /tmp/keystore.jks
+          - ls -la /tmp/keystore.jks
 
           echo "Generating key.properties..."
           cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
