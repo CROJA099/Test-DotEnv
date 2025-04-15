@@ -13,16 +13,14 @@ workflows:
       - name: Decode Keystore
         script: |
           echo "KEYSTORE_FILE: $KEYSTORE_FILE"
-          
-          - echo "$KEYSTORE_FILE" | base64 --decode > /tmp/keystore.jks
-          - ls -la /tmp/keystore.jks
+          - echo "$KEYSTORE_FILE" | base64 --decode > $KEYSTORE_PATH          
 
           echo "Generating key.properties..."
           cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
           storePassword=$KEYSTORE_PASSWORD
           keyPassword=$KEY_PASSWORD
           keyAlias=$KEY_ALIAS
-          storeFile=/tmp/keystore.jks
+          storeFile=$KEYSTORE_PATH
           EOF
 
       - name: Change Android app name

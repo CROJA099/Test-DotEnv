@@ -40,7 +40,7 @@ android {
     signingConfigs {
         create("release") {
             if (System.getenv("CI") != null) {
-                storeFile = file(System.getenv("KEYSTORE_FILE") ?: throw GradleException("KEYSTORE_FILE is not defined"))
+                storeFile = file(System.getenv("KEYSTORE_PATH") ?: throw GradleException("KEYSTORE_PATH is not defined"))
                 storePassword = System.getenv("KEYSTORE_PASSWORD") ?: throw GradleException("KEYSTORE_PASSWORD is not defined")
                 keyAlias = System.getenv("KEY_ALIAS") ?: throw GradleException("KEY_ALIAS is not defined")
                 keyPassword = System.getenv("KEY_PASSWORD") ?: throw GradleException("KEY_PASSWORD is not defined")
