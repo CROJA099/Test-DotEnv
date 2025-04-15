@@ -11,8 +11,12 @@ workflows:
       - flutter pub get
 
       - name: Decode Keystore
-        script: echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
-          cat >>"$CM_BUILD_DIR/android/key.properties" <<EOF
+        script: |
+          echo "Decoding keystore file..."
+          echo "$KEYSTORE_FILE" | base64 --decode > /tmp/keystore.jks
+
+          echo "Generating key.properties..."
+          cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
           storePassword=$KEYSTORE_PASSWORD
           keyPassword=$KEY_PASSWORD
           keyAlias=$KEY_ALIAS
@@ -52,13 +56,15 @@ workflows:
       - flutter pub get
 
       - name: Decode Keystore
-        script: echo $NISSAN_KEYSTORE | base64 --decode > $NISSAN_KEYSTORE_PATH
+        script: |
+          echo "Decoding keystore file..."
+          echo "$NISSAN_KEYSTORE" | base64 --decode > $NISSAN_KEYSTORE_PATH
 
       - name: Change Android app name
         script: sed -i.bak "s/android:label=\".*\"/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
 
       - name: Set .env file
-        script: echo $DOTENV | base64 --decode > .env
+        script: echo "$DOTENV" | base64 --decode > .env
 
       - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
     artifacts:
