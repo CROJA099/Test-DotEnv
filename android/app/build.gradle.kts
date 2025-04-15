@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -27,27 +26,22 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
-   
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.test_dotenv"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    val clientName = System.getenv("CLIENT_NAME") ?: throw GradleException("CLIENT_NAME is not defined")
     val flavor = System.getenv("FLAVOR_NAME") ?: throw GradleException("FLAVOR_NAME is not defined")
 
     signingConfigs {
-        release{
-            if (System.getenv("CI")) {
+        create("release") {
+            if (System.getenv("CI") != null) {
                 storeFile = file(System.getenv("KEYSTORE_FILE") ?: throw GradleException("KEYSTORE_FILE is not defined"))
-                storePassword = System.getenv("STORE_PASSWORD") ?: throw GradleException("STORE_PASSWORD is not defined")
+                storePassword = System.getenv("KEYSTORE_PASSWORD") ?: throw GradleException("KEYSTORE_PASSWORD is not defined")
                 keyAlias = System.getenv("KEY_ALIAS") ?: throw GradleException("KEY_ALIAS is not defined")
                 keyPassword = System.getenv("KEY_PASSWORD") ?: throw GradleException("KEY_PASSWORD is not defined")
             } else {
@@ -57,27 +51,33 @@ android {
                 keyPassword = keystoreProperties["keyPassword"] as String?
             }
         }
+        create("debug") {
+            storeFile = keystoreProperties["debugStoreFile"]?.let { file(it as String) }
+            storePassword = keystoreProperties["debugStorePassword"] as String?
+            keyAlias = keystoreProperties["debugKeyAlias"] as String?
+            keyPassword = keystoreProperties["debugKeyPassword"] as String?
+        }
     }
 
     flavorDimensions("flavor-type")
     productFlavors {
-        create("${flavor}") {
+        create(flavor) {
             dimension = "flavor-type"
-            applicationId = "com.example.${flavor}"
-            resValue(type = "string", name = "app_name", value = "${flavor} App")
-            signingConfig = signingConfigs.release            
-        }        
+            applicationId = "com.example.$flavor"
+            resValue(type = "string", name = "app_name", value = "$flavor App")
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
-    
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.findByName("${clientName}CONFIG") ?: throw GradleException("${clientName}CONFIG not found")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
-            signingConfig = signingConfigs..debug"
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 }
