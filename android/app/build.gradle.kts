@@ -51,10 +51,10 @@ android {
                 keyAlias = System.getenv("KEY_ALIAS") ?: throw GradleException("KEY_ALIAS is not defined")
                 keyPassword = System.getenv("KEY_PASSWORD") ?: throw GradleException("KEY_PASSWORD is not defined")
             } else {
-                storeFile = keystoreProperties["${clientName}_storeFile"]?.let { file(it as String) }
-                storePassword = keystoreProperties["${clientName}_storePassword"] as String?
-                keyAlias = keystoreProperties["${clientName}_keyAlias"] as String?
-                keyPassword = keystoreProperties["${clientName}_keyPassword"] as String?
+                storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+                storePassword = keystoreProperties["storePassword"] as String?
+                keyAlias = keystoreProperties["keyAlias"] as String?
+                keyPassword = keystoreProperties["keyPassword"] as String?
             }
         }
     }
