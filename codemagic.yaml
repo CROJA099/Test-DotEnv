@@ -58,14 +58,6 @@ workflows:
       - name: Change Android app name
         script: sed -i.bak "s/android:label=\".*\"/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
 
-      - name: Change Android package name
-        script:
-          - flutter pub add change_app_package_name
-          - flutter pub run change_app_package_name:main $PACKAGE_NAME
-
-      - name: Change Android icons
-        script: cp -r ./ASSETS_FOLDER/$ANDROID_ASSETS_FOLDER/* ./android/app/src/main/res
-
       - name: Set .env file
         script: echo $DOTENV | base64 --decode > .env
 
