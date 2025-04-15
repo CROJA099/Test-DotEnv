@@ -51,12 +51,6 @@ android {
                 keyPassword = keystoreProperties["keyPassword"] as String?
             }
         }
-        create("debug") {
-            storeFile = keystoreProperties["debugStoreFile"]?.let { file(it as String) }
-            storePassword = keystoreProperties["debugStorePassword"] as String?
-            keyAlias = keystoreProperties["debugKeyAlias"] as String?
-            keyPassword = keystoreProperties["debugKeyPassword"] as String?
-        }
     }
 
     flavorDimensions("flavor-type")
