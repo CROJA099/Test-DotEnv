@@ -6,10 +6,28 @@ workflows:
       groups:
         - Mazda 
       android_signing:
-        - mazda_keystore
+        - MazdaKey
     scripts:
       - flutter clean
       - flutter pub get
+
+      - name: Decode Keystore
+        script: echo $MAZDA_KEYSTORE | base64 --decode > $MAZDA_KEYSTORE_PATH
+
+      - name: Change Android app name
+        script: sed -i.bak "s/android:label=\".*\"/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
+
+      - name: Change Android package name
+        script:
+          - flutter pub add change_app_package_name
+          - flutter pub run change_app_package_name:main $PACKAGE_NAME
+
+      - name: Change Android icons
+        script: cp -r ./ASSETS_FOLDER/$ANDROID_ASSETS_FOLDER/* ./android/app/src/main/res
+
+      - name: Set .env file
+        script: echo $DOTENV | base64 --decode > .env
+
       - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
     artifacts:
       - build/app/outputs/flutter-apk/app-mazda.apk
@@ -38,6 +56,24 @@ workflows:
     scripts:
       - flutter clean
       - flutter pub get
+
+      - name: Decode Keystore
+        script: echo $NISSAN_KEYSTORE | base64 --decode > $NISSAN_KEYSTORE_PATH
+
+      - name: Change Android app name
+        script: sed -i.bak "s/android:label=\".*\"/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
+
+      - name: Change Android package name
+        script:
+          - flutter pub add change_app_package_name
+          - flutter pub run change_app_package_name:main $PACKAGE_NAME
+
+      - name: Change Android icons
+        script: cp -r ./ASSETS_FOLDER/$ANDROID_ASSETS_FOLDER/* ./android/app/src/main/res
+
+      - name: Set .env file
+        script: echo $DOTENV | base64 --decode > .env
+
       - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
     artifacts:
       - build/app/outputs/flutter-apk/app-nissan.apk

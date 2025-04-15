@@ -44,12 +44,12 @@ android {
     val flavor = System.getenv("FLAVOR_NAME") ?: throw GradleException("FLAVOR_NAME is not defined")
 
     signingConfigs {
-        create("${clientName}CONFIG") {
-            if (System.getenv("CI") != null) {
-                storeFile = file(System.getenv("${clientName}_KEYSTORE_PATH") ?: throw GradleException("${clientName}_KEYSTORE_PATH is not defined"))
-                storePassword = System.getenv("${clientName}_KEYSTORE_PASSWORD") ?: throw GradleException("${clientName}_KEYSTORE_PASSWORD is not defined")
-                keyAlias = System.getenv("${clientName}_KEY_ALIAS") ?: throw GradleException("${clientName}_KEY_ALIAS is not defined")
-                keyPassword = System.getenv("${clientName}_KEY_PASSWORD") ?: throw GradleException("${clientName}_KEY_PASSWORD is not defined")
+        release{
+            if (System.getenv("CI")) {
+                storeFile = file(System.getenv("KEYSTORE_FILE") ?: throw GradleException("KEYSTORE_FILE is not defined"))
+                storePassword = System.getenv("STORE_PASSWORD") ?: throw GradleException("STORE_PASSWORD is not defined")
+                keyAlias = System.getenv("KEY_ALIAS") ?: throw GradleException("KEY_ALIAS is not defined")
+                keyPassword = System.getenv("KEY_PASSWORD") ?: throw GradleException("KEY_PASSWORD is not defined")
             } else {
                 storeFile = keystoreProperties["${clientName}_storeFile"]?.let { file(it as String) }
                 storePassword = keystoreProperties["${clientName}_storePassword"] as String?
@@ -65,19 +65,19 @@ android {
             dimension = "flavor-type"
             applicationId = "com.example.${flavor}"
             resValue(type = "string", name = "app_name", value = "${flavor} App")
-            signingConfig = signingConfigs.getByName("${clientName}CONFIG")            
+            signingConfig = signingConfigs.release            
         }        
     }
     
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.findByName("${clientName}CONFIG") ?: throw GradleException("${clientName}CONFIG not found")
         }
-        getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
+        debug {
+            signingConfig = signingConfigs..debug"
         }
     }
 }
