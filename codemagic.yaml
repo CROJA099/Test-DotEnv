@@ -28,7 +28,7 @@ workflows:
 
       - flutter build apk --flavor=mazda --dart-define-from-file=.env/mazda.env
     artifacts:
-      - build/app/outputs/flutter-apk/app-mazda.apk
+      - build/**/outputs/apk/**/*.apk
 
   mazda_ios:
     name: Mazda IPA Workflow
