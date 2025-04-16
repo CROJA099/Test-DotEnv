@@ -12,7 +12,6 @@ workflows:
 
       - name: Decode Keystore
         script: |
-          echo "KEYSTORE_FILE: $KEYSTORE_FILE"
           echo "$KEYSTORE_FILE" | base64 --decode > "$KEYSTORE_PATH"          
 
           echo "Generating key.properties..."
@@ -56,15 +55,14 @@ workflows:
 
       - name: Decode Keystore
         script: |
-          echo "KEYSTORE_FILE: $NISSAN_KEYSTORE"
-          echo "$NISSAN_KEYSTORE" | base64 --decode > "$NISSAN_KEYSTORE_PATH"          
+          echo "$NISSAN_KEYSTORE" | base64 --decode > "$KEYSTORE_PATH"          
 
           echo "Generating key.properties..."
           cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
-          storePassword=$NISSAN_KEYSTORE_PASSWORD
-          keyPassword=$NISSAN_KEY_PASSWORD
-          keyAlias=$NISSAN_KEY_ALIAS
-          storeFile=$NISSAN_KEYSTORE_PATH
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=$KEYSTORE_PATH
           EOF
 
       - name: Change Android app name
