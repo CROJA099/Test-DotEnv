@@ -55,7 +55,7 @@ workflows:
 
       - name: Decode Keystore
         script: |
-          echo "$NISSAN_KEYSTORE" | base64 --decode > "$KEYSTORE_PATH"          
+          echo "$KEYSTORE_FILE" | base64 --decode > "$KEYSTORE_PATH"          
 
           echo "Generating key.properties..."
           cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
