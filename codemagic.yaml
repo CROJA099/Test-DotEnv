@@ -13,7 +13,7 @@ workflows:
       - name: Decode Keystore
         script: |
           echo "KEYSTORE_FILE: $KEYSTORE_FILE"
-          echo "$KEYSTORE_FILE" | base64 --decode > $KEYSTORE_PATH          
+          echo "$KEYSTORE_FILE" | base64 --decode > "$KEYSTORE_PATH"          
 
           echo "Generating key.properties..."
           cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
@@ -49,26 +49,30 @@ workflows:
       flutter: stable
       groups:
         - Nissan 
-      android_signing:
-        - NissanKey
+      
     scripts:
       - flutter clean
       - flutter pub get
 
       - name: Decode Keystore
         script: |
-          echo "Decoding keystore file..."
-          echo "$NISSAN_KEYSTORE" | base64 --decode > $NISSAN_KEYSTORE_PATH
+          echo "KEYSTORE_FILE: $NISSAN_KEYSTORE"
+          echo "$NISSAN_KEYSTORE" | base64 --decode > "$NISSAN_KEYSTORE_PATH"          
+
+          echo "Generating key.properties..."
+          cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
+          storePassword=$NISSAN_KEYSTORE_PASSWORD
+          keyPassword=$NISSAN_KEY_PASSWORD
+          keyAlias=$NISSAN_KEY_ALIAS
+          storeFile=$NISSAN_KEYSTORE_PATH
+          EOF
 
       - name: Change Android app name
         script: sed -i.bak "s/android:label=\".*\"/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
 
-      - name: Set .env file
-        script: echo "$DOTENV" | base64 --decode > .env
-
       - flutter build apk --flavor=nissan --dart-define-from-file=.env/nissan.env
     artifacts:
-      - build/app/outputs/flutter-apk/app-nissan.apk
+      - build/**/outputs/apk/**/*.apk
 
   nissan_ios:
     name: Nissan IPA Workflow
